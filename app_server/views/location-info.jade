@@ -1,0 +1,60 @@
+extends layout
+
+include _includes/sharedHTMLfunctions
+
+block content
+  .row.page-header
+    .col-lg-12
+      h1 #{pageHeader.title}
+  .row
+    .col-xs-12.col-md-9
+      .row
+      .col-xs-12.col-sm-6
+        p.rating
+          +outputRating(locationInfo.rating)
+        p #{locationInfo.address}
+          .panel.panel-primary
+            .panel-heading
+              h2.panel-title Opening hours
+            .panel-body
+              - for day in locationInfo.openingTimes
+                -if (day.status)
+                  p #{day.days} : #{day.opening} - #{day.closing}
+                -else
+                  p #{day.days} : Closed
+
+          .panel.panel-primary
+            .panel-heading
+              h2.panel-title Facilities
+            .panel-body
+              - for facility in locationInfo.facilities
+                span.label.label-warning
+                  span.glyphicon.glyphicon-ok
+                  | &nbsp; #{facility}
+                | &nbsp;
+              
+      .col-xs-12.col-sm-6.location-map
+        .panel.panel-primary
+          .panel-heading
+            h2.panel-title Location map
+          .panel-body
+            img.img-responsive.img-rounded(src= locationInfo.map)
+  .row
+    .col-xs-12
+      .panel.panel-primary.review-panel
+        .panel-heading
+          a.btn.btn-default.pull-right(href='/location/#{locationInfo._id}/review/new') Add Review
+          h2.panel-title Customer reviews
+        .panel-body.review-container
+          .row
+            - for review in locationInfo.reviews
+              .review
+                .well.well-sm.review-header
+                  span.rating
+                    +outputRating(review.reviewRate)
+                  span.reviewAuthor #{review.author}
+                  small.reviewTimestamp 
+                    +fortmatDate(review.date)
+                .col-xs-12
+                  p #{review.comment}
+                  .row
