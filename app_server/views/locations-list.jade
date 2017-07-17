@@ -9,19 +9,22 @@ block content
         h1= pageHeader.title
           small &nbsp;#{pageHeader.strapline}
   .row
-    .col-xs-12.col-sm-8
+    .col-xs-12.col-sm-8(ng-controller="locationListCtrl")
       .row.list-group
-        each location in locations
-          .col-xs-12.list-group-item
+          .row
+            .col-xs-3
+              label#filter-label(for="filter") Filter Results &nbsp;&nbsp;
+            .col-xs-5
+              input#filter.form-control(type='text' name='filter' ng-model='textFilter') 
+          .error {{ message }}
+          .col-xs-12.list-group-item(ng-repeat="location in data | filter : textFilter")
             h4
-              a(href="/location/#{location._id}") #{location.name}
-              small &nbsp;
-                +outputRating(location.rating)
-              span.badge.pull-right.badge-default #{location.distance}
-            p.address #{location.address}
+              a(href="/location/{{ location._id }}") {{ location.name }} &nbsp;
+              small(rating-stars , rating="location.rating")
+              span.badge.pull-right.badge-default {{ location.distance}}
+            p.address {{ location.address }}
             p
-              each facility in location.facilities
-                span.label.label-warning #{facility}
-                | &nbsp;
+              span.label.label-warning.label-facility(ng-repeat="facility in location.facilities")
+              | {{ facility }}
     .col-xs-12.col-sm-4
       p.lead #{sidebar}

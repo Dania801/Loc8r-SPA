@@ -21,34 +21,22 @@ var _showError = function(req , res , status){
 };
 
 // Main Location page (render)
-var renderHomePage = function(req , res , body){
+var renderHomePage = function(req , res){
   res.render('locations-list', {
     title: 'Loc8r - find a place to work with wifi',
     pageHeader: {
       title: 'Loc8r',
       strapline: 'Find places to work with wifi near you!'
     } ,
-    sidebar : "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for.",
-    locations : body
+    sidebar : "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for."
     });
 }
 
 // Main Location page (request)
 module.exports.homelist = function(req , res){
-  var path = '/api/locations' ;
-  var requestOptions = {
-    url: apiOptions.server + path ,
-    method: "GET" ,
-    json: {},
-    qs: {}
-  }
-  request(requestOptions , function(err , response , body){
-    if(response.statusCode === 200){
-      renderHomePage(req , res , body);
-    } else {
-      _showError(req , res , response.statusCode);
-    }
-  });
+
+      renderHomePage(req , res);
+
 };
 
 // Detail page (render)
@@ -82,7 +70,8 @@ module.exports.locationInfo = function(req , res){
 var renderReviewForm = function(req , res , body){
   res.render('location-review-form' , {
     title: "Add review",
-    pageHeader : {title: 'Review ' + body.name}
+    pageHeader : {title: 'Review ' + body.name} ,
+    url: req.originalUrl
   }) ;
 };
 
@@ -102,6 +91,7 @@ module.exports.addReview = function(req , res){
   });
 };
 
+// Adding review and redirecting to the details page
 module.exports.doAddReview = function(req , res){
   var path = '/api/locations/' + req.params.locationid + '/reviews';
   console.log(req.params.locationid) ;
