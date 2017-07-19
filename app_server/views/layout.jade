@@ -19,8 +19,13 @@ html(ng-app='loc8rApp')
             li
               a(href='/about/') About
   .container
-    block content
-    script(src='/angular/angular.min.js')
-    script(src='/angular/loc8rApp.js')
-    script(src='/javascripts/jquery-3.2.1.min.js')
-    script(src='/bootstrap/js/bootstrap.min.js')
+    div(ng-view)
+      block content
+      script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js")
+      script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js")
+      script(src='/angular/angular.min.js')
+      scipt(src='/lib/angular-route.min.js')
+      script(src='/app.js')
+      script(src='/home/home.controller.js')
+      script(src='/javascripts/jquery-3.2.1.min.js')
+      script(src='/bootstrap/js/bootstrap.min.js')
